@@ -6,7 +6,7 @@ import shellvars
 
 
 def tempscript(text):
-    f = NamedTemporaryFile("w+r")
+    f = NamedTemporaryFile("w+b")
     f.write(text)
     f.flush()
     return f
