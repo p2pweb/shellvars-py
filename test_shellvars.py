@@ -69,9 +69,13 @@ VAR1=not_1""",
         with tempscript("""export VAR1=1
 VAR2=2
 export VAR3=3
-""") as f:
+""".encode('utf-8')) as f:
             vars = shellvars.get_vars(f.name)
-            self.assertEqual(vars, {'VAR1':'1', 'VAR3':'3'})
+            # print( 'vars, ```{}```'.format(vars) )
+            self.assertEqual(
+                vars,
+                { b'VAR1': b'1', b'VAR3': b'3' }
+                )
 
 
 
