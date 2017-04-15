@@ -1,5 +1,7 @@
-from unittest import TestCase
+import unittest
 from tempfile import NamedTemporaryFile
+from unittest import TestCase
+
 import shellvars
 
 
@@ -63,3 +65,8 @@ export VAR3=3
 """) as f:
             vars = shellvars.get_vars(f.name)
             self.assertEqual(vars, {'VAR1':'1', 'VAR3':'3'})
+
+
+
+if __name__ == "__main__":
+  unittest.main()
