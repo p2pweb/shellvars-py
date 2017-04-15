@@ -17,6 +17,7 @@ def tempscript(text):
 
 
 class TestShell2Py(TestCase):
+
     def test_script_vars(self):
         with tempscript(b"""#!/bin/bash
 # this is an example shell script
@@ -33,11 +34,11 @@ export VAR3=123
             vars = shellvars.list_vars(f.name)
             self.assertEqual(
                 set(vars),
-                set((b'VAR1', b'VAR2', b'VAR3'))
+                set( (b'VAR1', b'VAR2', b'VAR3') )
                 )
 
     def test_get_multiline_value(self):
-        with tempscript("""#!/bin/bash
+        with tempscript(b"""#!/bin/bash
 # this is an example shell script
 export VAR1=1
 
@@ -48,33 +49,31 @@ an example of a multiline var which contains an equation
 VAR1=not_1"
 
 export VAR3=123
-        """.encode('utf-8')) as f:
+        """) as f:
             vars = shellvars.get_vars(f.name)
-            self.assertEqual(vars, {
-                b'VAR1': b'1',
-                b'VAR2': b"""This
+            self.assertEqual(
+                vars,
+                { b'VAR1': b'1', b'VAR2': b"""This
 is
 
 an example of a multiline var which contains an equation
 VAR1=not_1""",
-                b'VAR3': b'123'
-            })
+                b'VAR3': b'123' }
+                )
 
     def test_script_vars_ignores(self):
-        with tempscript( "export VAR1=1".encode('utf-8') ) as f:
+        with tempscript( b"export VAR1=1" ) as f:
             vars = shellvars.list_vars(f.name, ignore=['VAR1'])
             self.assertFalse('VAR1' in vars)
 
     def test_get_vars_ignores_unexported_vars(self):
-        with tempscript("""export VAR1=1
+        with tempscript(b"""export VAR1=1
 VAR2=2
 export VAR3=3
-""".encode('utf-8')) as f:
+""") as f:
             vars = shellvars.get_vars(f.name)
-            # print( 'vars, ```{}```'.format(vars) )
             self.assertEqual(
-                vars,
-                { b'VAR1': b'1', b'VAR3': b'3' }
+                vars, { b'VAR1': b'1', b'VAR3': b'3' }
                 )
 
 
