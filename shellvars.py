@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 # http://stackoverflow.com/questions/19429074/how-to-get-the-environment-variable-set-by-a-bash-script-from-inside-a-python-sc
 # http://stackoverflow.com/questions/11161373/list-all-environment-variable-names-in-busybox
 
