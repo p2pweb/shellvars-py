@@ -29,9 +29,12 @@ an example of a
 multiline=variable with an embedded equal sign"
 
 export VAR3=123
-        """) as f:
+        """.encode('utf-8')) as f:
             vars = shellvars.list_vars(f.name)
-            self.assertEqual(set(vars), set(('VAR1', 'VAR2', 'VAR3')))
+            self.assertEqual(
+                set(vars),
+                set(('VAR1'.encode('utf-8'), 'VAR2'.encode('utf-8'), 'VAR3'.encode('utf-8')))
+                )
 
     def test_get_multiline_value(self):
         with tempscript("""#!/bin/bash

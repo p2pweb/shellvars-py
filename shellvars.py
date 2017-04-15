@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 from subprocess import Popen, PIPE
 from os import path
 
-IGNORE_DEFAULT = set(["SHLVL", "PWD", "_"])
+IGNORE_DEFAULT = set(["SHLVL".encode('utf-8'), "PWD".encode('utf-8'), "_".encode('utf-8')])
 
 
 def _noscripterror(script_path):
@@ -43,10 +43,7 @@ def list_vars(script_path, ignore=IGNORE_DEFAULT):
 
         tmp = ( """. "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
                 """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""" )
-        # print( 'tmp, ```{}```'.format(tmp) )
-
         input = ( tmp.encode('utf-8') )
-
 
         cmd = "env -i bash".split()
 
@@ -56,6 +53,7 @@ def list_vars(script_path, ignore=IGNORE_DEFAULT):
             raise ShellScriptException(script_path, stderr_data)
         else:
             lines = stdout_data.split()
+            # print( 'lines, ```{}```'.format(lines) )
             return [elt for elt in lines if elt not in ignore]
     else:
         raise _noscripterror(script_path)
