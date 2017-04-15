@@ -18,7 +18,7 @@ def tempscript(text):
 
 class TestShell2Py(TestCase):
     def test_script_vars(self):
-        with tempscript("""#!/bin/bash
+        with tempscript(b"""#!/bin/bash
 # this is an example shell script
 export VAR1=simplevalue
 
@@ -29,11 +29,11 @@ an example of a
 multiline=variable with an embedded equal sign"
 
 export VAR3=123
-        """.encode('utf-8')) as f:
+        """) as f:
             vars = shellvars.list_vars(f.name)
             self.assertEqual(
                 set(vars),
-                set(('VAR1'.encode('utf-8'), 'VAR2'.encode('utf-8'), 'VAR3'.encode('utf-8')))
+                set((b'VAR1', b'VAR2', b'VAR3'))
                 )
 
     def test_get_multiline_value(self):
