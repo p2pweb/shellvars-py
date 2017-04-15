@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 from subprocess import Popen, PIPE
 from os import path
 
-IGNORE_DEFAULT = set(["SHLVL".encode('utf-8'), "PWD".encode('utf-8'), "_".encode('utf-8')])
+IGNORE_DEFAULT = set( [b"SHLVL", b"PWD", b"_"] )
 
 
 def _noscripterror(script_path):
@@ -38,9 +38,6 @@ def list_vars(script_path, ignore=IGNORE_DEFAULT):
     :rtype: list
     """
     if path.isfile(script_path):
-        # input = (""". "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
-        #          """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""")
-
         tmp = ( """. "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
                 """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""" )
         input = ( tmp.encode('utf-8') )
@@ -53,7 +50,6 @@ def list_vars(script_path, ignore=IGNORE_DEFAULT):
             raise ShellScriptException(script_path, stderr_data)
         else:
             lines = stdout_data.split()
-            # print( 'lines, ```{}```'.format(lines) )
             return [elt for elt in lines if elt not in ignore]
     else:
         raise _noscripterror(script_path)
