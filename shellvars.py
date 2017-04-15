@@ -86,9 +86,7 @@ def get_var(script_path, var):
     :return: byte
     """
     if path.isfile(script_path):
-        # input = '. "%s"; echo -n "$%s"\n'% (script_path, var)
-        input = '. "%s"; echo -n "$%s"\n'.encode('utf-8') % (script_path.encode('utf-8'), var)
-
+        input = b'. "%s"; echo -n "$%s"\n' % ( script_path.encode('utf-8'), var )
         pipe = Popen(["bash"],  stdout=PIPE, stdin=PIPE, stderr=PIPE)
         stdout_data, stderr_data = pipe.communicate(input=input)
         if stderr_data:
@@ -97,5 +95,3 @@ def get_var(script_path, var):
             return stdout_data
     else:
         raise _noscripterror(script_path)
-
-
