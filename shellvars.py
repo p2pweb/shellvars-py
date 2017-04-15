@@ -38,8 +38,16 @@ def list_vars(script_path, ignore=IGNORE_DEFAULT):
     :rtype: list
     """
     if path.isfile(script_path):
-        input = (""". "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
-                 """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""")
+        # input = (""". "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
+        #          """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""")
+
+        tmp = ( """. "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
+                """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""" )
+        # print( 'tmp, ```{}```'.format(tmp) )
+
+        input = ( tmp.encode('utf-8') )
+
+
         cmd = "env -i bash".split()
 
         p = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=PIPE)

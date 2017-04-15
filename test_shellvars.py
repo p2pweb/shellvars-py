@@ -58,7 +58,7 @@ VAR1=not_1""",
             })
 
     def test_script_vars_ignores(self):
-        with tempscript("export VAR1=1") as f:
+        with tempscript( "export VAR1=1".encode('utf-8') ) as f:
             vars = shellvars.list_vars(f.name, ignore=['VAR1'])
             self.assertFalse('VAR1' in vars)
 
