@@ -48,16 +48,16 @@ an example of a multiline var which contains an equation
 VAR1=not_1"
 
 export VAR3=123
-        """) as f:
+        """.encode('utf-8')) as f:
             vars = shellvars.get_vars(f.name)
             self.assertEqual(vars, {
-                'VAR1': '1',
-                'VAR2': """This
+                b'VAR1': b'1',
+                b'VAR2': b"""This
 is
 
 an example of a multiline var which contains an equation
 VAR1=not_1""",
-                'VAR3': '123'
+                b'VAR3': b'123'
             })
 
     def test_script_vars_ignores(self):
