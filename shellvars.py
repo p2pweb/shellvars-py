@@ -86,11 +86,13 @@ def get_var(script_path, var):
     :param script_path: Path the a shell script
     :type script_path: str or unicode
     :param var: environment variable name
-    :type var: str or unicode
-    :return: str
+    :type var: byte or unicode
+    :return: byte
     """
     if path.isfile(script_path):
-        input = '. "%s"; echo -n "$%s"\n'% (script_path, var)
+        # input = '. "%s"; echo -n "$%s"\n'% (script_path, var)
+        input = '. "%s"; echo -n "$%s"\n'.encode('utf-8') % (script_path.encode('utf-8'), var)
+
         pipe = Popen(["bash"],  stdout=PIPE, stdin=PIPE, stderr=PIPE)
         stdout_data, stderr_data = pipe.communicate(input=input)
         if stderr_data:
