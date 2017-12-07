@@ -30,16 +30,16 @@ def list_vars(script_path, ignore=IGNORE_DEFAULT):
     :param script_path: Path the a shell script
     :type script_path: str or unicode
     :param ignore: variable names to ignore.  By default we ignore variables
-                    that env injects into the script's environment.
-                    See IGNORE_DEFAULT.
+    that env injects into the script's environment.
+    See IGNORE_DEFAULT.
     :type ignore: iterable
     :return: Key value pairs representing the environment variables defined
-            in the script.
+    in the script.
     :rtype: list
     """
     if path.isfile(script_path):
         tmp = ( """. "%s"; env | awk -F = '/[a-zA-Z_][a-zA-Z_0-9]*=/ """ % script_path +
-                """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""" )
+               """{ if (!system("[ -n \\"${" $1 "}\\" ]")) print $1 }'""" )
         input = ( tmp.encode('utf-8') )
 
         cmd = "env -i bash".split()
@@ -62,17 +62,17 @@ def get_vars(script_path, ignore=IGNORE_DEFAULT):
     :param script_path: Path the a shell script
     :type script_path: str or unicode
     :param ignore: variable names to ignore.  By default we ignore variables
-                    that env injects into the script's environment.
-                    See IGNORE_DEFAULT.
+    that env injects into the script's environment.
+    See IGNORE_DEFAULT.
     :type ignore: iterable
     :return: Key value pairs representing the environment variables defined
-            in the script.
+    in the script.
     :rtype: dict
     """
 
     # Iterate over every var independently:
     # This is slower than using env, but enables us to capture multiline variables
-    return dict((var, get_var(script_path, var)) for var in list_vars(script_path))
+    return dict((var.decode('utf-8','ignore'), get_var(script_path, var).decode('utf-8','ignore')) for var in list_vars(script_path, ignore))
 
 
 def get_var(script_path, var):
